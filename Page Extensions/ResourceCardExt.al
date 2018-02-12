@@ -1,6 +1,6 @@
 pageextension 123456700 ResourceCardExt extends "Resource Card"
 // CSD1.00 - 2012-06-15 - D. E. Veloper
-// Chapter 5 - Lab 2
+// Chapter 5 - Lab 1-2
 // Added new fields:
 // - Internal/External
 // - Maximum Participants

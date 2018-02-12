@@ -1,6 +1,6 @@
 tableextension 123456700 ResourceExt extends Resource
 // CSD1.00 - 2012-06-15 - D. E. Veloper
-// Chapter 5 - Lab 1
+// Chapter 5 - Lab 1-1
 // -	Added new fields:
 // -	Internal/External
 // -	Maximum Participants

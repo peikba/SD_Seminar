@@ -1,4 +1,6 @@
 page 123456701 "Seminar Card"
+// CSD1.00 - 2018-01-01 - D. E. Veloper
+// Chapter 5 - Lab 2-4 & Lab 2-5
 {
     PageType = Card;
     SourceTable = Seminar;
@@ -10,69 +12,74 @@ page 123456701 "Seminar Card"
         {
             group(General)
             {
-                field("No.";"No.")
-                {   
+                field("No."; "No.")
+                {
+                    trigger OnAssistEdit();
+                    begin
+                        if AssistEdit then
+                            CurrPage.Update;
+                    end;
                 }
-                field(Name;Name)
-                {   
+                field(Name; Name)
+                {
                 }
-                field("Search Name";"Search Name")
-                {   
+                field("Search Name"; "Search Name")
+                {
                 }
-                field(Duration;Duration)
-                {   
+                field(Duration; Duration)
+                {
                 }
-                field("Minimum Participants";"Minimum Participants")
-                {   
+                field("Minimum Participants"; "Minimum Participants")
+                {
                 }
-                field("Maximum Participants";"Maximum Participants")
-                { 
+                field("Maximum Participants"; "Maximum Participants")
+                {
                 }
-                field(Blocked;Blocked)
-                { 
+                field(Blocked; Blocked)
+                {
                 }
-                field("Last Date Modified";"Last Date Modified")
-                {   
-                }                
+                field("Last Date Modified"; "Last Date Modified")
+                {
+                }
             }
-             group(Invoicing)
+            group(Invoicing)
             {
-                field("Gen. Prod. Posting Group";"Gen. Prod. Posting Group")
+                field("Gen. Prod. Posting Group"; "Gen. Prod. Posting Group")
                 {
                 }
-                field("VAT Prod. Posting Group";"VAT Prod. Posting Group")
+                field("VAT Prod. Posting Group"; "VAT Prod. Posting Group")
                 {
                 }
-                field("Seminar Price";"Seminar Price")
+                field("Seminar Price"; "Seminar Price")
                 {
                 }
             }
         }
         area(FactBoxes)
         {
-            systempart("Links";Links)
+            systempart("Links"; Links)
             {
             }
-            systempart("Notes";Notes)
+            systempart("Notes"; Notes)
             {
             }
         }
- 
+
     }
 
     actions
     {
-        area(processing)
+        area(Navigation)
         {
-            action(ActionName)
+            group("&Seminar")
             {
-                trigger OnAction();
-                begin
-                end;
+                action("Co&mments")
+                {
+                    RunObject=page "Comment List";
+                    RunPageLink = "Table Name"=filter(123456701),"No."=field("No.");
+                    Image = Comment;
+                }
             }
         }
     }
-    
-    var
-        myInt : Integer;
 }

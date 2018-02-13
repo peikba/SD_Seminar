@@ -1,4 +1,6 @@
 table 123456701 Seminar
+// CSD1.00 - 2018-01-01 - D. E. Veloper
+// Chapter 5 - Lab 2-2
 {
     Caption = 'Seminar';
 
@@ -48,7 +50,7 @@ table 123456701 Seminar
             Caption = 'Comment';
             Editable = false;
             FieldClass = FlowField;
-            CalcFormula = exist ("Comment Line" where ("Table Name" = const (123456701), "No." = Field ("No.")));
+            CalcFormula = exist("Comment Line" where("Table Name"=filter(123456701),"No."=Field("No.")));
         }
         field(100; "Seminar Price"; Decimal)
         {

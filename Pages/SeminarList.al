@@ -1,5 +1,8 @@
 page 123456702 "Seminar List"
+// CSD1.00 - 2018-01-01 - D. E. Veloper
+// Chapter 5 - Lab 2-6
 {
+    Caption='Seminar List';
     PageType = List;
     SourceTable = Seminar;
     Editable = false;
@@ -32,7 +35,7 @@ page 123456702 "Seminar List"
                 }
             }
         }
-        area(factboxes)
+        area(FactBoxes)
         {
             systempart("Links"; Links)
             {
@@ -40,19 +43,22 @@ page 123456702 "Seminar List"
             systempart("Notes"; Notes)
             {
             }
-
         }
+
     }
 
     actions
     {
-        area(processing)
+        area(Navigation)
         {
-            action(ActionName)
+            group("&Seminar")
             {
-                trigger OnAction();
-                begin
-                end;
+                action("Co&mments")
+                {
+                    RunObject=page "Comment List";
+                    RunPageLink = "Table Name"=filter(123456701),"No."=field("No.");
+                    Image = Comment;
+                }
             }
         }
     }

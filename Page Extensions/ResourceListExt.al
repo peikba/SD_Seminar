@@ -1,5 +1,5 @@
 pageextension 123456701 ResourceListExt extends "Resource List"
-// CSD1.00 - 2012-06-15 - D. E. Veloper
+// CSD1.00 - 2018-01-01 - D. E. Veloper
 // Chapter 5 - Lab 1-3
 // Changed property on the Type field
 // Added new fields:

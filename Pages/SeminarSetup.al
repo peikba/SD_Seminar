@@ -16,7 +16,7 @@ page 123456700 "Seminar Setup"
                 field("Seminar Nos.";"Seminar Nos.")
                 {
                 }
-                field("Seminar Registration";"Seminar Registration Nos.")
+                field("Seminar Registration Nos.";"Seminar Registration Nos.")
                 {
                 }
                 field("Posted Seminar Reg. Nos.";"Posted Seminar Reg. Nos.")

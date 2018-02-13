@@ -1,93 +1,139 @@
 table 123456701 Seminar
 {
+    Caption = 'Seminar';
 
     fields
     {
-        field(10;"No.";Code[20])
+        field(10; "No."; Code[20])
         {
-            Caption='No.';
+            Caption = 'No.';
+
+            trigger OnValidate();
+            begin
+                if("Search Name" = UpperCase(xRec.Name)) or("Search Name" = '') then
+                    "Search Name" := Name;
+            end;
         }
-        field(20;Name;Text[50])
-        {   
-            Caption='Name';
-        }
-        field(30;"Search Name";Text[50])
+        field(20; Name; Text[50])
         {
-            Caption='Search Name';
+            Caption = 'Name';
         }
-        field(40;"Duration";Decimal)
+        field(30; "Search Name"; Text[50])
         {
-            Caption='Duration';
+            Caption = 'Search Name';
         }
-        field(50;"Minimum Participants";Integer)
+        field(40; "Duration"; Decimal)
         {
-            Caption='Minimum Participants';
+            Caption = 'Duration';
         }
-        field(60;"Maximum Participants";Integer)
+        field(50; "Minimum Participants"; Integer)
         {
-            Caption='Maximum Participants';
+            Caption = 'Minimum Participants';
         }
-        field(70;Blocked;Boolean)
+        field(60; "Maximum Participants"; Integer)
         {
-            Caption='Blocked';
+            Caption = 'Maximum Participants';
         }
-        field(80;"Last Date Modified";Date)
+        field(70; Blocked; Boolean)
         {
-            Caption='Last Date Modified';
-            Editable=false;
+            Caption = 'Blocked';
         }
-        field(90;Comment;Boolean)
+        field(80; "Last Date Modified"; Date)
         {
-            Caption='Comment';
-            FieldClass=FlowField;
-            CalcFormula=exist("Comment Line" where("Table Name"=const(123456701),"No."=Field("No.")));
+            Caption = 'Last Date Modified';
+            Editable = false;
         }
-        field(100;"Seminar Price";Decimal)
+        field(90; Comment; Boolean)
         {
-            Caption='Seminar Price';
+            Caption = 'Comment';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = exist ("Comment Line" where ("Table Name" = const (123456701), "No." = Field ("No.")));
         }
-        field(110;"Gen. Prod. Posting Group";code[10])
+        field(100; "Seminar Price"; Decimal)
         {
-            Caption='Gen. Prod. Posting Group';
+            Caption = 'Seminar Price';
+        }
+        field(110; "Gen. Prod. Posting Group"; code[10])
+        {
+            Caption = 'Gen. Prod. Posting Group';
             TableRelation = "Gen. Product Posting Group";
+
+            trigger OnValidate();
+            begin
+                if(xRec."Gen. Prod. Posting Group" <> "Gen. Prod. Posting Group") then begin
+                    if GenProdPostingGroup.ValidateVatProdPostingGroup(GenProdPostingGroup, "VAT Prod. Posting Group") then
+                        Validate("VAT Prod. Posting Group", GenProdPostingGroup."Def. VAT Prod. Posting Group");
+                end;
+            end;
         }
-        field(120;"VAT Prod. Posting Group";code[10])
+        field(120; "VAT Prod. Posting Group"; code[10])
         {
-            Caption='VAT Prod. Posting Group';
+            Caption = 'VAT Prod. Posting Group';
             TableRelation = "VAT Product Posting Group";
         }
-        field(130;"No. Series";Code[10])
+        field(130; "No. Series"; Code[10])
         {
-            Caption='No. Series';
+            Editable = false;
+            Caption = 'No. Series';
+            TableRelation = "No. Series";
         }
-
     }
 
     keys
     {
-        key(PK;"No.")
+        key(PK; "No.")
         {
             Clustered = true;
         }
     }
-    
+
     var
-        myInt : Integer;
+        SeminarSetup: Record "Seminar Setup";
+        CommentLine: record "Comment Line";
+        Seminar: Record Seminar;
+        GenProdPostingGroup: Record "Gen. Product Posting Group";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
 
     trigger OnInsert();
     begin
+        if "No." = '' then begin
+            SeminarSetup.get;
+            SeminarSetup.TestField("Seminar Nos.");
+            NoSeriesMgt.InitSeries(SeminarSetup."Seminar Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+        end;
     end;
 
     trigger OnModify();
     begin
+        "Last Date Modified" := Today;
     end;
 
     trigger OnDelete();
     begin
+        CommentLine.Reset;
+        CommentLine.SetRange("Table Name", 123456701); //Seminar
+        CommentLine.SetRange("No.", "No.");
+        CommentLine.DeleteAll;
     end;
 
     trigger OnRename();
     begin
+        "Last Date Modified" := Today;
     end;
 
+    procedure AssistEdit(): Boolean;
+    begin
+        with Seminar do
+        begin
+            Seminar := Rec;
+            SeminarSetup.get;
+            SeminarSetup.TestField("Seminar Nos.");
+            if NoSeriesMgt.SelectSeries(SeminarSetup."Seminar Nos.", xRec."No. Series", "No. Series") then begin
+                NoSeriesMgt.SetSeries("No.");
+                Rec := Seminar;
+                exit(true);
+            end;
+        end;
+    end;
 }

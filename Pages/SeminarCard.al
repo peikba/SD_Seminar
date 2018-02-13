@@ -43,6 +43,9 @@ page 123456701 "Seminnar Card"
                 field("VAT Prod. Posting Group";"VAT Prod. Posting Group")
                 {
                 }
+                field("Seminar Price";"Seminar Price")
+                {
+                }
             }
         }
         area(FactBoxes)

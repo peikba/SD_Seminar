@@ -21,7 +21,7 @@ page 123456702 "Seminar List"
                 field(Name; Name)
                 {
                 }
-                field(Duration; Duration)
+                field("Seminar Duration";"Seminar Duration")
                 {
                 }
                 field("Seminar Price"; "Seminar Price")

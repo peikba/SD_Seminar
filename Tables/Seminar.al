@@ -24,9 +24,9 @@ table 123456701 Seminar
         {
             Caption = 'Search Name';
         }
-        field(40; "Duration"; Decimal)
+        field(40; "Seminar Duration"; Decimal)
         {
-            Caption = 'Duration';
+            Caption = 'Seminar Duration';
         }
         field(50; "Minimum Participants"; Integer)
         {

@@ -5,7 +5,6 @@
   "brief": "A New Seminar module for managing seminars",
   "description": "",
   "version": "1.0.0.0",
-  "compatibilityId": "1.0.0.0",
   "privacyStatement": "",
   "EULA": "",
   "help": "",
@@ -16,7 +15,7 @@
   "screenshots": [],
   "platform": "11.0.0.0",
   "application": "11.0.0.0",
-  "features": "TranslationFile",
+  "features": ["TranslationFile"],
   "idRange": {
     "from": 123456700,
     "to": 123456799

@@ -22,14 +22,14 @@ table 123456711 "Seminar Registration Line"
 
             trigger OnValidate();
             begin
-                IF "Bill-to Customer No." <> xRec."Bill-to Customer No." THEN BEGIN
-                  IF Registered THEN BEGIN
+                if "Bill-to Customer No." <> xRec."Bill-to Customer No." then begin
+                  if Registered then begin
                     ERROR(Text001,
-                      FIELDCAPTION("Bill-to Customer No."),
-                      FIELDCAPTION(Registered),
+                      FieldCaption("Bill-to Customer No."),
+                      FieldCaption(Registered),
                       Registered);
-                  END;
-                END;
+                  end;
+                end;
             end;
         }
         field(4;"Participant Contact No.";Code[20])
@@ -38,40 +38,40 @@ table 123456711 "Seminar Registration Line"
 
             trigger OnLookup();
             begin
-                ContactBusinessRelation.RESET;
-                ContactBusinessRelation.SETRANGE("Link to Table",ContactBusinessRelation."Link to Table"::Customer);
-                ContactBusinessRelation.SETRANGE("No.","Bill-to Customer No.");
-                IF ContactBusinessRelation.FINDFIRST THEN BEGIN
-                  Contact.SETRANGE("Company No.",ContactBusinessRelation."Contact No.");
-                  IF PAGE.RUNMODAL(PAGE::"Contact List",Contact) = ACTION::LookupOK THEN BEGIN
+                ContactBusinessRelation.Reset;
+                ContactBusinessRelation.SetRange("Link to Table",ContactBusinessRelation."Link to Table"::Customer);
+                ContactBusinessRelation.SetRange("No.","Bill-to Customer No.");
+                if ContactBusinessRelation.FindFirst then begin
+                  Contact.SetRange("Company No.",ContactBusinessRelation."Contact No.");
+                  if page.RunModal(page::"Contact List",Contact) = ACTION::LookupOK then begin
                     "Participant Contact No." := Contact."No.";
-                  END;
-                END;
+                  end;
+                end;
 
-                CALCFIELDS("Participant Name");
+                CalcFields("Participant Name");
             end;
 
             trigger OnValidate();
             begin
-                IF ("Bill-to Customer No." <> '') AND
+                if ("Bill-to Customer No." <> '') and
                    ("Participant Contact No." <> '')
-                THEN BEGIN
-                  Contact.GET("Participant Contact No.");
-                  ContactBusinessRelation.RESET;
-                  ContactBusinessRelation.SETCURRENTKEY("Link to Table","No.");
-                  ContactBusinessRelation.SETRANGE("Link to Table",ContactBusinessRelation."Link to Table"::Customer);
-                  ContactBusinessRelation.SETRANGE("No.","Bill-to Customer No.");
-                  IF ContactBusinessRelation.FINDFIRST THEN BEGIN
-                    IF ContactBusinessRelation."Contact No." <> Contact."Company No." THEN BEGIN
+                then begin
+                  Contact.Get("Participant Contact No.");
+                  ContactBusinessRelation.Reset;
+                  ContactBusinessRelation.SetCurrentKey("Link to Table","No.");
+                  ContactBusinessRelation.SetRange("Link to Table",ContactBusinessRelation."Link to Table"::Customer);
+                  ContactBusinessRelation.SetRange("No.","Bill-to Customer No.");
+                  if ContactBusinessRelation.FindFirst then begin
+                    if ContactBusinessRelation."Contact No." <> Contact."Company No." then begin
                       ERROR(Text002,Contact."No.",Contact.Name,"Bill-to Customer No.");
-                    END;
-                  END;
-                END;
+                    end;
+                  end;
+                end;
             end;
         }
         field(5;"Participant Name";Text[50])
         {
-            CalcFormula = Lookup(Contact.Name WHERE ("No."=FIELD("Participant Contact No.")));
+            CalcFormula = Lookup(Contact.Name where ("No."=Field("Participant Contact No.")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -107,12 +107,12 @@ table 123456711 "Seminar Registration Line"
 
             trigger OnValidate();
             begin
-                IF "Seminar Price" = 0 THEN BEGIN
+                if "Seminar Price" = 0 then begin
                   "Line Discount Amount" := 0;
-                END ELSE BEGIN
-                  GLSetup.GET;
-                  "Line Discount Amount" := ROUND("Line Discount %" * "Seminar Price" * 0.01,GLSetup."Amount Rounding Precision");
-                END;
+                end else begin
+                  GLSetup.Get;
+                  "Line Discount Amount" := Round("Line Discount %" * "Seminar Price" * 0.01,GLSetup."Amount Rounding Precision");
+                end;
                 UpdateAmount;
             end;
         }
@@ -122,12 +122,12 @@ table 123456711 "Seminar Registration Line"
 
             trigger OnValidate();
             begin
-                IF "Seminar Price" = 0 THEN BEGIN
+                if "Seminar Price" = 0 then begin
                   "Line Discount %" := 0;
-                END ELSE BEGIN
-                  GLSetup.GET;
-                  "Line Discount %" := ROUND("Line Discount Amount" / "Seminar Price" * 100,GLSetup."Amount Rounding Precision");
-                END;
+                end else begin
+                  GLSetup.Get;
+                  "Line Discount %" := Round("Line Discount Amount" / "Seminar Price" * 100,GLSetup."Amount Rounding Precision");
+                end;
                 UpdateAmount;
             end;
         }
@@ -137,16 +137,16 @@ table 123456711 "Seminar Registration Line"
 
             trigger OnValidate();
             begin
-                TESTFIELD("Bill-to Customer No.");
-                TESTFIELD("Seminar Price");
-                GLSetup.GET;
-                Amount := ROUND(Amount,GLSetup."Amount Rounding Precision");
+                TestField("Bill-to Customer No.");
+                TestField("Seminar Price");
+                GLSetup.Get;
+                Amount := Round(Amount,GLSetup."Amount Rounding Precision");
                 "Line Discount Amount" := "Seminar Price" - Amount;
-                IF "Seminar Price" = 0 THEN BEGIN
+                if "Seminar Price" = 0 then begin
                   "Line Discount %" := 0;
-                END ELSE BEGIN
-                  "Line Discount %" := ROUND("Line Discount Amount" / "Seminar Price" * 100,GLSetup."Amount Rounding Precision");
-                END;
+                end else begin
+                  "Line Discount %" := Round("Line Discount Amount" / "Seminar Price" * 100,GLSetup."Amount Rounding Precision");
+                end;
             end;
         }
         field(14;Registered;Boolean)
@@ -164,13 +164,13 @@ table 123456711 "Seminar Registration Line"
 
     trigger OnDelete();
     begin
-        TESTFIELD(Registered,FALSE);
+        TestField(Registered,false);
     end;
 
     trigger OnInsert();
     begin
         GetSeminarRegHeader;
-        "Registration Date" := WORKDATE;
+        "Registration Date" := WorkDate;
         "Seminar Price" := SeminarRegHeader."Seminar Price";
         Amount := SeminarRegHeader."Seminar Price";
     end;
@@ -187,20 +187,20 @@ table 123456711 "Seminar Registration Line"
 
     procedure GetSeminarRegHeader();
     begin
-        IF SeminarRegHeader."No." <> "Document No." THEN BEGIN
-          SeminarRegHeader.GET("Document No.");
-        END;
+        if SeminarRegHeader."No." <> "Document No." then begin
+          SeminarRegHeader.Get("Document No.");
+        end;
     end;
 
     procedure CalculateAmount();
     begin
-        Amount := ROUND(("Seminar Price" / 100) * (100 - "Line Discount %"));
+        Amount := Round(("Seminar Price" / 100) * (100 - "Line Discount %"));
     end;
 
     procedure UpdateAmount();
     begin
-        GLSetup.GET;
-        Amount := ROUND("Seminar Price" - "Line Discount Amount",GLSetup."Amount Rounding Precision");
+        GLSetup.Get;
+        Amount := Round("Seminar Price" - "Line Discount Amount",GLSetup."Amount Rounding Precision");
     end;
 }
 

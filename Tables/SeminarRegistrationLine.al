@@ -24,7 +24,7 @@ table 123456711 "Seminar Registration Line"
             begin
                 if "Bill-to Customer No." <> xRec."Bill-to Customer No." then begin
                   if Registered then begin
-                    ERROR(Text001,
+                    ERROR(RegisteredErrorTxt,
                       FieldCaption("Bill-to Customer No."),
                       FieldCaption(Registered),
                       Registered);
@@ -43,9 +43,8 @@ table 123456711 "Seminar Registration Line"
                 ContactBusinessRelation.SetRange("No.","Bill-to Customer No.");
                 if ContactBusinessRelation.FindFirst then begin
                   Contact.SetRange("Company No.",ContactBusinessRelation."Contact No.");
-                  if page.RunModal(page::"Contact List",Contact) = ACTION::LookupOK then begin
+                  if page.RunModal(page::"Contact List",Contact) = "Action"::LookupOK then 
                     "Participant Contact No." := Contact."No.";
-                  end;
                 end;
 
                 CalcFields("Participant Name");
@@ -63,7 +62,7 @@ table 123456711 "Seminar Registration Line"
                   ContactBusinessRelation.SetRange("No.","Bill-to Customer No.");
                   if ContactBusinessRelation.FindFirst then begin
                     if ContactBusinessRelation."Contact No." <> Contact."Company No." then begin
-                      ERROR(Text002,Contact."No.",Contact.Name,"Bill-to Customer No.");
+                      ERROR(WrongContactErrorTxt,Contact."No.",Contact.Name,"Bill-to Customer No.");
                     end;
                   end;
                 end;
@@ -182,22 +181,21 @@ table 123456711 "Seminar Registration Line"
         Contact : Record Contact;
         GLSetup : Record "General Ledger Setup";
         SkipBillToContact : Boolean;
-        Text001 : Label 'You cannot change the %1, because %2 is %3.';
-        Text002 : Label 'Contact %1 %2 is related to a different company than customer %3.';
+        RegisteredErrorTxt : Label 'You cannot change the %1, because %2 is %3.';
+        WrongContactErrorTxt : Label 'Contact %1 %2 is related to a different company than customer %3.';
 
-    procedure GetSeminarRegHeader();
+    local procedure GetSeminarRegHeader();
     begin
-        if SeminarRegHeader."No." <> "Document No." then begin
+        if SeminarRegHeader."No." <> "Document No." then 
           SeminarRegHeader.Get("Document No.");
-        end;
     end;
 
-    procedure CalculateAmount();
+    local procedure CalculateAmount();
     begin
         Amount := Round(("Seminar Price" / 100) * (100 - "Line Discount %"));
     end;
 
-    procedure UpdateAmount();
+    local procedure UpdateAmount();
     begin
         GLSetup.Get;
         Amount := Round("Seminar Price" - "Line Discount Amount",GLSetup."Amount Rounding Precision");

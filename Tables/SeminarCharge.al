@@ -22,41 +22,45 @@ table 123456712 "Seminar Charge"
             OptionMembers = Resource,"G/L Account";
 
             trigger OnValidate();
+            var
+                OldType : Integer;
             begin
-                IF Type <> xRec.Type THEN BEGIN
-                  Description := '';
-                END;
+                if Type <> xRec.Type then begin
+                  OldType:=Type;  
+                  Init;
+                  Type:=OldType;
+                end;
             end;
         }
         field(4;"No.";Code[20])
         {
-            TableRelation = IF (Type=CONST(Resource)) Resource."No."
-                            ELSE IF (Type=CONST("G/L Account")) "G/L Account"."No.";
+            TableRelation = if (Type=const(Resource)) Resource."No."
+                            else if (Type=const("G/L Account")) "G/L Account"."No.";
 
             trigger OnValidate();
             begin
-                CASE Type OF
+                case Type of
                   Type::Resource:
-                    BEGIN
-                      Resource.GET("No.");
-                      Resource.TESTFIELD(Blocked,FALSE);
-                      Resource.TESTFIELD("Gen. Prod. Posting Group");
+                    begin
+                      Resource.Get("No.");
+                      Resource.TestField(Blocked,false);
+                      Resource.TestField("Gen. Prod. Posting Group");
                       Description := Resource.Name;
                       "Gen. Prod. Posting Group" := Resource."Gen. Prod. Posting Group";
                       "VAT Prod. Posting Group" := Resource."VAT Prod. Posting Group";
                       "Unit of Measure Code" := Resource."Base Unit of Measure";
                       "Unit Price" := Resource."Unit Price";
-                    END;
+                    end;
                   Type::"G/L Account":
-                    BEGIN
-                      GLAccount.GET("No.");
+                    begin
+                      GLAccount.Get("No.");
                       GLAccount.CheckGLAcc();
-                      GLAccount.TESTFIELD("Direct Posting",TRUE);
+                      GLAccount.TestField("Direct Posting",true);
                       Description := GLAccount.Name;
                       "Gen. Prod. Posting Group" := GLAccount."Gen. Bus. Posting Group";
                       "VAT Prod. Posting Group" := GLAccount."VAT Bus. Posting Group";
-                    END;
-                END;
+                    end;
+                end;
             end;
         }
         field(5;Description;Text[50])
@@ -68,7 +72,7 @@ table 123456712 "Seminar Charge"
 
             trigger OnValidate();
             begin
-                "Total Price" := ROUND("Unit Price" * Quantity,0.01);
+                "Total Price" := Round("Unit Price" * Quantity,0.01);
             end;
         }
         field(7;"Unit Price";Decimal)
@@ -78,13 +82,21 @@ table 123456712 "Seminar Charge"
 
             trigger OnValidate();
             begin
-                "Total Price" := ROUND("Unit Price" * Quantity,0.01);
+                "Total Price" := Round("Unit Price" * Quantity,0.01);
             end;
         }
         field(8;"Total Price";Decimal)
         {
             AutoFormatType = 1;
             Editable = false;
+
+            trigger OnValidate();
+            begin
+              if (Quantity<>0) then 
+                "Unit Price" := Round("Total Price" / Quantity,0.01)
+              else
+                "Unit Price":=0;
+            end;
         }
         field(9;"To Invoice";Boolean)
         {
@@ -96,30 +108,30 @@ table 123456712 "Seminar Charge"
         }
         field(11;"Unit of Measure Code";Code[10])
         {
-            TableRelation = IF (Type=CONST(Resource)) "Resource Unit of Measure".Code WHERE ("Resource No."=FIELD("No."))
-                            ELSE "Unit of Measure".Code;
+            TableRelation = if (Type=const(Resource)) "Resource Unit of Measure".Code where ("Resource No."=Field("No."))
+                            else "Unit of Measure".Code;
 
             trigger OnValidate();
             begin
-                CASE Type OF
+                case Type of
                   Type::Resource:
-                    BEGIN
-                      Resource.GET("No.");
-                      IF "Unit of Measure Code" = '' THEN BEGIN
+                    begin
+                      Resource.Get("No.");
+                      if "Unit of Measure Code" = '' then begin
                         "Unit of Measure Code" := Resource."Base Unit of Measure";
-                      END;
-                      ResourceUofM.GET("No.","Unit of Measure Code");
+                      end;
+                      ResourceUofM.Get("No.","Unit of Measure Code");
                       "Qty. per Unit of Measure" := ResourceUofM."Qty. per Unit of Measure";
-                      "Total Price" := ROUND(Resource."Unit Price" * "Qty. per Unit of Measure");
-                    END;
+                      "Total Price" := Round(Resource."Unit Price" * "Qty. per Unit of Measure");
+                    end;
                   Type::"G/L Account":
-                    BEGIN
+                    begin
                       "Qty. per Unit of Measure" := 1;
-                    END;
-                END;
-                IF CurrFieldNo = FIELDNO("Unit of Measure Code") THEN BEGIN
-                  VALIDATE("Unit Price");
-                END;
+                    end;
+                end;
+                if CurrFieldNo = FieldNO("Unit of Measure Code") then begin
+                  Validate("Unit Price");
+                end;
             end;
         }
         field(12;"Gen. Prod. Posting Group";Code[10])
@@ -152,12 +164,12 @@ table 123456712 "Seminar Charge"
 
     trigger OnDelete();
     begin
-        TESTFIELD(Registered,FALSE);
+        TestField(Registered,false);
     end;
 
     trigger OnInsert();
     begin
-        SeminarRegistrationHeader.GET("Document No.");
+        SeminarRegistrationHeader.Get("Document No.");
     end;
 
     var

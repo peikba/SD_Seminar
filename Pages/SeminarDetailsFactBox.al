@@ -1,7 +1,5 @@
 page 123456717 "Seminar Details FactBox"
 {
-    // version CSD1.00
-
     // CSD1.00 - 2018-01-01 - D. E. Veloper
     //   Chapter 6 - Lab 2
     //     - Created new page

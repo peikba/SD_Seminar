@@ -1,9 +1,7 @@
 table 123456711 "Seminar Registration Line"
 {
-    // version CSD1.00
-
-    // CSD1.00 - 2013-03-01 - D. E. Veloper
-    //   Chapter 3 - Lab 1
+    // CSD1.00 - 2018-01-01 - D. E. Veloper
+    //   Chapter 6 - Lab 1-5
     //     - Created new table
 
 

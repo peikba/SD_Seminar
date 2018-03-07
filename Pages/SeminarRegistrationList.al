@@ -1,9 +1,7 @@
 page 123456713 "Seminar Registration List"
 {
-    // version CSD1.00
-
-    // CSD1.00 - 2018-01-01 - D. E. Veloper
-    //   Chapter 6 - Lab 2
+     // CSD1.00 - 2018-01-01 - D. E. Veloper
+    //   Chapter 6 - Lab 3
     //     - Created new page
 
     Caption = 'Seminar Registration List';

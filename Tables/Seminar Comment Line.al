@@ -1,4 +1,6 @@
 table 123456704 "Seminar Comment Line"
+// CSD1.00 - 2018-01-01 - D. E. Veloper
+// Chapter 5 - Lab 2-1
 {
     Caption='Seminar Comment Line';
     LookupPageId = "Seminar Comment List";

@@ -1,9 +1,7 @@
 page 123456724 "Seminar Charges"
 {
-    // version CSD1.00
-
     // CSD1.00 - 2018-01-01 - D. E. Veloper
-    //   Chapter 6 - Lab 2
+    //   Chapter 6 - Lab 1
     //     - Created new page
 
     AutoSplitKey = true;

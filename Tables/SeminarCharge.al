@@ -1,9 +1,7 @@
 table 123456712 "Seminar Charge"
 {
-    // version CSD1.00
-
     // CSD1.00 - 2018-01-01 - D. E. Veloper
-    //   Chapter 3 - Lab 1
+    //   Chapter 6 - Lab 1
     //     - Created new table
 
     fields

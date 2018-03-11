@@ -24,6 +24,10 @@ pageextension 123456700 ResourceCardExt extends "Resource Card"
                 {
                     Visible = ShowMaxField;
                 }
+                field("Quantity Per Day";"Quantity Per Day")
+                {
+                    
+                }
             }
         }
     }

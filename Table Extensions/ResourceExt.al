@@ -7,16 +7,20 @@ tableextension 123456700 ResourceExt extends Resource
 {
     fields
     {
-        field(123456700;"Resource Type";Option)
+        field(123456701;"Resource Type";Option)
         {
             Caption = 'Resource Type';
             OptionMembers = "Internal","External";
             OptionCaption = 'Internal,External';
         }
-        field(123456701;"Maximum Participants";Integer)
+        field(123456702;"Maximum Participants";Integer)
         {
             Caption = 'Maximum Participants';
         }
+        field(123456703;"Quantity Per Day";Integer)
+        {
+            Caption = 'Quantity Per Day';
+        }        
     }
 }
 

@@ -3,6 +3,11 @@
   <file datatype="xml" source-language="en-US" original="SD Seminar">
     <body>
       <group id="body">
+        <trans-unit id="PageExtension 3264818139 - Control 743222972 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Seminar</source>
+          <note from="Developer" annotates="general" priority="2" />
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension - Control</note>
+        </trans-unit>
         <trans-unit id="Page 3075349434 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
           <source>Seminar Charges</source>
           <note from="Developer" annotates="general" priority="2" />
@@ -82,6 +87,11 @@
           <source>Seminar Setup</source>
           <note from="Developer" annotates="general" priority="2" />
           <note from="Xliff Generator" annotates="general" priority="3">Page - Page</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3264818139 - Field 3718962993 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Seminar</source>
+          <note from="Developer" annotates="general" priority="2" />
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension - Field</note>
         </trans-unit>
         <trans-unit id="TableExtension 558681197 - Field 270816758 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource Type</source>

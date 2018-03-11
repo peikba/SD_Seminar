@@ -1,6 +1,7 @@
 table 123456704 "Seminar Comment Line"
 // CSD1.00 - 2018-01-01 - D. E. Veloper
 // Chapter 5 - Lab 2-1
+// Chapter 7 - Lab 3-2
 {
     Caption='Seminar Comment Line';
     LookupPageId = "Seminar Comment List";
@@ -22,7 +23,8 @@ table 123456704 "Seminar Comment Line"
         {
             Caption='No.';
             TableRelation=if ("Table Name"=CONST(Seminar)) "Seminar" 
-                          else if ("Table Name"=const("Seminar Registration")) "Seminar Registration Header";
+                          else if ("Table Name"=const("Seminar Registration")) "Seminar Registration Header"
+                          else if ("Table Name"=const("Posted Seminar Registration")) "Posted Seminar Reg. Header";
         }
         field(40;"Line No.";Integer)
         {
